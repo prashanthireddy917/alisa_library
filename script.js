@@ -786,11 +786,105 @@ function resetTimer() {
   updateTimerDisplay();
 }
 
+function getUnreadBooks() {
+  return ownedBooks.filter((book) => {
+    const status = safeText(book.status).toLowerCase();
+    return status !== "read";
+  });
+}
+
+function shuffleArray(array) {
+  return [...array].sort(() => Math.random() - 0.5);
+}
+
+function getRandomUnreadBooks(count = 1) {
+  const unread = getUnreadBooks();
+
+  if (unread.length === 0) {
+    return [];
+  }
+
+  return shuffleArray(unread).slice(0, Math.min(count, unread.length));
+}
+
+function showNoUnreadBooksMessage() {
+  if (!gamePlayStage || !gameResult) return;
+
+  gamePlayStage.innerHTML = `
+    <div class="magic-card-reveal">
+      <div>
+        <h2>No unread books found</h2>
+        <p>Upload your books or mark some books as Unread.</p>
+      </div>
+    </div>
+  `;
+
+  gameResult.innerHTML = `
+    <h3>No unread books</h3>
+    <p>All games choose only from your unread books.</p>
+  `;
+}
+
+function renderBookChoiceCards(books, introText = "Choose one book") {
+  if (!gamePlayStage) return;
+
+  if (!books.length) {
+    showNoUnreadBooksMessage();
+    return;
+  }
+
+  gamePlayStage.innerHTML = `
+    <div class="book-choice-box">
+      <h2>${introText}</h2>
+      <div class="book-choice-grid">
+        ${books.map((book) => `
+          <button class="book-choice-card" data-book-id="${book.id}">
+            <strong>${safeText(book.title)}</strong>
+            <small>${safeText(book.author) || "Unknown author"}</small>
+            <span>${safeText(book.genre) || "Unread book"}</span>
+          </button>
+        `).join("")}
+      </div>
+    </div>
+  `;
+
+  gamePlayStage.querySelectorAll(".book-choice-card").forEach((button) => {
+    button.addEventListener("click", () => {
+      const book = books.find((item) => item.id === button.dataset.bookId);
+
+      if (!book) return;
+
+      gameResult.innerHTML = `
+        <h3>Your selected book</h3>
+        <p><strong>${safeText(book.title)}</strong></p>
+        <p>${safeText(book.author) || "Unknown author"}</p>
+      `;
+
+      gamePlayStage.innerHTML = `
+        <div class="magic-card-reveal">
+          <div>
+            <h2>${safeText(book.title)}</h2>
+            <p>${safeText(book.author) || "Unknown author"}</p>
+            <p>Start this unread book next.</p>
+          </div>
+        </div>
+      `;
+    });
+  });
+}
+
 function playGame(gameType) {
   if (!gamePlayStage || !gameResult) return;
 
   gamePlayStage.innerHTML = "";
   gameResult.innerHTML = "";
+
+  const unread = getUnreadBooks();
+
+  if (unread.length === 0) {
+    showNoUnreadBooksMessage();
+    return;
+  }
 
   const type = safeText(gameType).toLowerCase();
 
@@ -806,19 +900,38 @@ function playGame(gameType) {
     playCrystalGame();
   } else if (type.includes("truth") || type.includes("dare")) {
     playTruthDareGame();
-  } else {
-    playRandomGame();
+  } else if (type.includes("mood")) {
+    playMoodGame();
+  } else if (type.includes("genre")) {
+    playGenreGame();
+  } else if (type.includes("page")) {
+    playPageCountGame();
+  } else if (type.includes("blind")) {
+    playBlindDateGame();
   }
 }
 
-function finishGameResult(text) {
+function finishGameResult(book, extraText = "") {
+  if (!book || !gameResult) return;
+
   gameResult.innerHTML = `
     <h3>Your result</h3>
-    <p>${text}</p>
+    <p><strong>${safeText(book.title)}</strong></p>
+    <p>${safeText(book.author) || "Unknown author"}</p>
+    ${extraText ? `<p>${extraText}</p>` : ""}
   `;
 }
 
 function playWheelGame() {
+  const books = getRandomUnreadBooks(1);
+
+  if (!books.length) {
+    showNoUnreadBooksMessage();
+    return;
+  }
+
+  const book = books[0];
+
   gamePlayStage.innerHTML = `
     <div class="sparkles"></div>
     <div class="wheel-wrap">
@@ -835,12 +948,29 @@ function playWheelGame() {
   }, 100);
 
   setTimeout(() => {
-    const book = randomItem(ownedBooks.length ? ownedBooks : [{ title: randomItem(gamePrompts), author: "" }]);
-    finishGameResult(`Read: ${book.title}`);
+    gamePlayStage.innerHTML = `
+      <div class="magic-card-reveal">
+        <div>
+          <h2>${safeText(book.title)}</h2>
+          <p>${safeText(book.author) || "Unknown author"}</p>
+        </div>
+      </div>
+    `;
+
+    finishGameResult(book, "Wheel picked this unread book.");
   }, 2700);
 }
 
 function playJarGame() {
+  const books = getRandomUnreadBooks(1);
+
+  if (!books.length) {
+    showNoUnreadBooksMessage();
+    return;
+  }
+
+  const book = books[0];
+
   gamePlayStage.innerHTML = `
     <div class="sparkles"></div>
     <div class="tbr-jar jar-shake">
@@ -852,90 +982,143 @@ function playJarGame() {
   `;
 
   setTimeout(() => {
-    const book = randomItem(ownedBooks.length ? ownedBooks : [{ title: randomItem(gamePrompts), author: "" }]);
-
     gamePlayStage.innerHTML = `
       <div class="magic-card-reveal">
         <div>
-          <h2>${book.title}</h2>
-          <p>${book.author || "Your random pick"}</p>
+          <h2>${safeText(book.title)}</h2>
+          <p>${safeText(book.author) || "Unknown author"}</p>
         </div>
       </div>
     `;
 
-    finishGameResult(`Jar picked: ${book.title}`);
+    finishGameResult(book, "TBR Jar picked this unread book.");
   }, 2300);
 }
 
 function playDiceGame() {
-  gamePlayStage.innerHTML = `<div class="dice-face">🎲</div>`;
+  const unread = getUnreadBooks();
 
-  const prompts = [
-    "Read 10 pages",
-    "Read 25 pages",
-    "Read 50 pages",
-    "Pick a thriller",
-    "Pick a book under 350 pages",
-    "Pick your newest book"
-  ];
+  if (!unread.length) {
+    showNoUnreadBooksMessage();
+    return;
+  }
+
+  const diceNumber = Math.floor(Math.random() * 6) + 1;
+  const books = getRandomUnreadBooks(diceNumber);
+
+  gamePlayStage.innerHTML = `
+    <div class="dice-game-box">
+      <div class="dice-face">🎲</div>
+      <h2>Rolling...</h2>
+    </div>
+  `;
 
   setTimeout(() => {
-    const result = randomItem(prompts);
-
     gamePlayStage.innerHTML = `
-      <div class="magic-card-reveal">
-        <h2>${result}</h2>
+      <div class="dice-game-box">
+        <div class="dice-face">${diceNumber}</div>
+        <h2>Dice rolled ${diceNumber}</h2>
+        <p>Choose one book from these unread books.</p>
       </div>
     `;
 
-    finishGameResult(result);
+    setTimeout(() => {
+      renderBookChoiceCards(books, `Dice rolled ${diceNumber}. Pick 1 unread book.`);
+    }, 900);
   }, 1500);
 }
 
 function playCardGame() {
+  const books = getRandomUnreadBooks(3);
+
+  if (!books.length) {
+    showNoUnreadBooksMessage();
+    return;
+  }
+
   gamePlayStage.innerHTML = `
-    <div class="card-grid">
-      <div class="card-pick">?</div>
-      <div class="card-pick">?</div>
-      <div class="card-pick">?</div>
+    <div class="card-game-box">
+      <h2>Pick one mystery card</h2>
+      <div class="card-grid">
+        ${books.map((book, index) => `
+          <button class="card-pick" data-book-id="${book.id}">
+            ?
+          </button>
+        `).join("")}
+      </div>
     </div>
   `;
 
-  const cards = gamePlayStage.querySelectorAll(".card-pick");
-
-  cards.forEach((card, index) => {
+  gamePlayStage.querySelectorAll(".card-pick").forEach((card) => {
     card.addEventListener("click", () => {
-      cards.forEach((c) => c.classList.remove("flipped"));
+      const book = books.find((item) => item.id === card.dataset.bookId);
+
+      if (!book) return;
+
       card.classList.add("flipped");
+      card.innerHTML = `<span>${safeText(book.title).slice(0, 18)}</span>`;
 
-      const book = randomItem(ownedBooks.length ? ownedBooks : [{ title: randomItem(gamePrompts), author: "" }]);
+      setTimeout(() => {
+        gamePlayStage.innerHTML = `
+          <div class="magic-card-reveal">
+            <div>
+              <h2>${safeText(book.title)}</h2>
+              <p>${safeText(book.author) || "Unknown author"}</p>
+            </div>
+          </div>
+        `;
 
-      card.innerHTML = `<span>${index + 1}</span>`;
-      finishGameResult(`Card picked: ${book.title}`);
+        finishGameResult(book, "Your mystery card chose this unread book.");
+      }, 700);
     });
   });
 }
 
 function playCrystalGame() {
+  const books = getRandomUnreadBooks(1);
+
+  if (!books.length) {
+    showNoUnreadBooksMessage();
+    return;
+  }
+
+  const book = books[0];
+
+  const messages = [
+    "The crystal ball sees a twisty unread book...",
+    "Your next unread read is calling you...",
+    "The book spirits picked this one...",
+    "A hidden unread story is waiting..."
+  ];
+
   gamePlayStage.innerHTML = `
     <div class="sparkles"></div>
     <div class="crystal-ball">🔮</div>
   `;
 
   setTimeout(() => {
-    const result = randomItem(gamePrompts);
-
     gamePlayStage.innerHTML = `
       <div class="magic-card-reveal">
-        <h2>${result}</h2>
+        <div>
+          <h2>${safeText(book.title)}</h2>
+          <p>${safeText(book.author) || "Unknown author"}</p>
+          <p>${randomItem(messages)}</p>
+        </div>
       </div>
     `;
 
-    finishGameResult(result);
+    finishGameResult(book, "Crystal Ball picked this unread book.");
   }, 2000);
 }
 
 function playTruthDareGame() {
+  const books = getRandomUnreadBooks(2);
+
+  if (!books.length) {
+    showNoUnreadBooksMessage();
+    return;
+  }
+
   gamePlayStage.innerHTML = `
     <div class="choice-box">
       <h2>Truth or Dare</h2>
@@ -951,53 +1134,184 @@ function playTruthDareGame() {
       const choice = button.dataset.choice;
 
       const truth = [
-        "Which book did you buy but never read?",
-        "Which book disappointed you?",
-        "Which book are you avoiding?",
-        "Which book cover made you buy it?"
+        "Which unread book have you been avoiding?",
+        "Which unread book did you buy only because of the cover?",
+        "Which unread book are you scared will disappoint you?",
+        "Which unread book has been on your shelf the longest?"
       ];
 
       const dare = [
-        "Read 20 pages right now",
-        "Pick a book without checking Goodreads",
-        "Read the book you keep ignoring",
-        "Write a 3-line review"
+        "Read 20 pages from one of these books now.",
+        "Pick one book without checking reviews.",
+        "Start one of these unread books tonight.",
+        "Read the first chapter of one of these books."
       ];
 
-      const result = choice === "truth" ? randomItem(truth) : randomItem(dare);
+      const prompt = choice === "truth" ? randomItem(truth) : randomItem(dare);
 
-      gamePlayStage.innerHTML = `
-        <div class="magic-card-reveal">
-          <h2>${choice.toUpperCase()}</h2>
-          <p>${result}</p>
-        </div>
-      `;
-
-      finishGameResult(result);
+      renderBookChoiceCards(books, `${choice.toUpperCase()}: ${prompt}`);
     });
   });
 }
 
-function playRandomGame() {
+function playMoodGame() {
+  const unread = getUnreadBooks();
+
+  if (!unread.length) {
+    showNoUnreadBooksMessage();
+    return;
+  }
+
+  gamePlayStage.innerHTML = `
+    <div class="choice-box">
+      <h2>What mood do you want?</h2>
+      <div class="truth-dare-options">
+        <button class="truth-dare-option" data-mood="dark">Dark</button>
+        <button class="truth-dare-option" data-mood="fast">Fast Paced</button>
+        <button class="truth-dare-option" data-mood="mystery">Mystery</button>
+        <button class="truth-dare-option" data-mood="cozy">Cozy</button>
+      </div>
+    </div>
+  `;
+
+  gamePlayStage.querySelectorAll("[data-mood]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const mood = button.dataset.mood;
+      let filtered = unread;
+
+      if (mood === "mystery") {
+        filtered = unread.filter((book) =>
+          `${book.genre} ${book.title}`.toLowerCase().includes("mystery") ||
+          `${book.genre} ${book.title}`.toLowerCase().includes("thriller")
+        );
+      }
+
+      if (filtered.length === 0) {
+        filtered = unread;
+      }
+
+      renderBookChoiceCards(getRandomUnreadBooksFromList(filtered, 3), `Mood: ${button.textContent}. Pick one unread book.`);
+    });
+  });
+}
+
+function getRandomUnreadBooksFromList(list, count) {
+  return shuffleArray(list).slice(0, Math.min(count, list.length));
+}
+
+function playGenreGame() {
+  const unread = getUnreadBooks();
+
+  if (!unread.length) {
+    showNoUnreadBooksMessage();
+    return;
+  }
+
+  const genres = [...new Set(unread.map((book) => safeText(book.genre)).filter(Boolean))];
+
+  if (genres.length === 0) {
+    renderBookChoiceCards(getRandomUnreadBooks(3), "No genres found. Pick one unread book.");
+    return;
+  }
+
+  const genre = randomItem(genres);
+  const books = unread.filter((book) => safeText(book.genre).toLowerCase() === genre.toLowerCase());
+
   gamePlayStage.innerHTML = `
     <div class="sparkles"></div>
     <div class="magic-card-reveal">
-      <h2>Picking...</h2>
+      <div>
+        <h2>Genre Roulette</h2>
+        <p>${genre}</p>
+      </div>
     </div>
   `;
 
   setTimeout(() => {
-    const book = randomItem(ownedBooks.length ? ownedBooks : [{ title: randomItem(gamePrompts), author: "" }]);
-
-    gamePlayStage.innerHTML = `
-      <div class="magic-card-reveal">
-        <h2>${book.title}</h2>
-        <p>${book.author || "Random pick"}</p>
-      </div>
-    `;
-
-    finishGameResult(`Random pick: ${book.title}`);
+    renderBookChoiceCards(getRandomUnreadBooksFromList(books, 3), `Genre: ${genre}. Pick one unread book.`);
   }, 1200);
+}
+
+function playPageCountGame() {
+  const unread = getUnreadBooks();
+
+  if (!unread.length) {
+    showNoUnreadBooksMessage();
+    return;
+  }
+
+  gamePlayStage.innerHTML = `
+    <div class="choice-box">
+      <h2>Choose page count mood</h2>
+      <div class="truth-dare-options">
+        <button class="truth-dare-option" data-pages="short">Short: under 300</button>
+        <button class="truth-dare-option" data-pages="medium">Medium: 300-400</button>
+        <button class="truth-dare-option" data-pages="long">Long: 400+</button>
+      </div>
+    </div>
+  `;
+
+  gamePlayStage.querySelectorAll("[data-pages]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const type = button.dataset.pages;
+
+      let filtered = unread.filter((book) => {
+        const pages = Number(book.pages);
+
+        if (!pages) return false;
+        if (type === "short") return pages < 300;
+        if (type === "medium") return pages >= 300 && pages <= 400;
+        if (type === "long") return pages > 400;
+
+        return false;
+      });
+
+      if (filtered.length === 0) {
+        filtered = unread;
+      }
+
+      renderBookChoiceCards(getRandomUnreadBooksFromList(filtered, 3), `${button.textContent}. Pick one unread book.`);
+    });
+  });
+}
+
+function playBlindDateGame() {
+  const books = getRandomUnreadBooks(1);
+
+  if (!books.length) {
+    showNoUnreadBooksMessage();
+    return;
+  }
+
+  const book = books[0];
+
+  gamePlayStage.innerHTML = `
+    <div class="magic-card-reveal">
+      <div>
+        <h2>Blind Date With A Book</h2>
+        <p>Genre: ${safeText(book.genre) || "Mystery unread book"}</p>
+        <p>Pages: ${safeText(book.pages) || "Unknown pages"}</p>
+        <button id="revealBlindDateBtn">Reveal Book</button>
+      </div>
+    </div>
+  `;
+
+  const revealBtn = $("revealBlindDateBtn");
+
+  if (revealBtn) {
+    revealBtn.addEventListener("click", () => {
+      gamePlayStage.innerHTML = `
+        <div class="magic-card-reveal">
+          <div>
+            <h2>${safeText(book.title)}</h2>
+            <p>${safeText(book.author) || "Unknown author"}</p>
+          </div>
+        </div>
+      `;
+
+      finishGameResult(book, "Blind Date picked this unread book.");
+    });
+  }
 }
 
 function renderHomeSearch() {
