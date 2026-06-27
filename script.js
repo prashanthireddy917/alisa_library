@@ -1032,7 +1032,7 @@ musicMenuBtn.addEventListener("click", () => {
 document.querySelectorAll(".music-choice").forEach((button) => {
   button.addEventListener("click", () => {
     const file = button.dataset.music;
-    musicPlayer.src = `assets/music/${file}`;
+   musicPlayer.src = `./${file}`;
     musicPlayer.play();
   });
 });
