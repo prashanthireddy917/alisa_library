@@ -1544,3 +1544,104 @@ textarea {
     margin-top: 14px;
   }
 }
+/* BOOK NOOK FINAL FIX - NO FLOATING PANELS */
+.booknook-main-panel {
+  position: relative;
+  z-index: 10;
+  width: min(950px, 92vw);
+  margin: 95px auto 50px;
+  padding: 24px;
+  background: var(--panel);
+  border: 1px solid var(--gold);
+  box-shadow: 0 20px 60px var(--shadow);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  color: var(--cream);
+}
+
+.booknook-actions {
+  margin: 18px 0;
+}
+
+.booknook-actions button {
+  width: auto;
+}
+
+.booknook-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.booknook-card {
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 232, 189, 0.25);
+  border-radius: 22px;
+  padding: 22px;
+}
+
+.booknook-card h3 {
+  font-size: 32px;
+  margin-top: 0;
+}
+
+.booknook-card button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.booknook-card audio {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+}
+
+#readingTimer {
+  font-size: 52px;
+  text-align: center;
+  margin: 25px 0;
+  font-weight: bold;
+}
+
+.booknook-light-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.08);
+  pointer-events: none;
+  transition: 0.4s;
+}
+
+.booknook-light-layer.dark {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+/* phone layout */
+@media (max-width: 900px) {
+  .booknook-main-panel {
+    width: 94vw;
+    margin: 24px auto 60px;
+    padding: 18px;
+  }
+
+  .booknook-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .booknook-card {
+    padding: 18px;
+  }
+
+  .booknook-card h3 {
+    font-size: 28px;
+  }
+
+  #readingTimer {
+    font-size: 46px;
+  }
+
+  .booknook-actions button {
+    width: 100%;
+  }
+}
