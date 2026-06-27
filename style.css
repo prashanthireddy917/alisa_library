@@ -1645,3 +1645,135 @@ textarea {
     width: 100%;
   }
 }
+/* FINAL MOBILE LAYOUT FIX v20 */
+
+/* Make Home page cards stop overlapping */
+@media (max-width: 900px) {
+  .home-page {
+    min-height: 130vh !important;
+    padding: 18px !important;
+    padding-bottom: 80px !important;
+  }
+
+  .home-page .current-card {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    width: 94vw !important;
+    margin: 24px auto 14px !important;
+    z-index: 8 !important;
+  }
+
+  .home-page .home-search-card {
+    position: relative !important;
+    width: 94vw !important;
+    margin: 14px auto 30px !important;
+    z-index: 9 !important;
+  }
+
+  .home-page .current-card h3 {
+    font-size: 30px !important;
+    line-height: 1.1 !important;
+  }
+
+  .home-page .home-search-card h2 {
+    font-size: 32px !important;
+    line-height: 1.1 !important;
+  }
+}
+
+/* Make Book Nook background visible */
+.booknook-page {
+  background-image: url("./booknook_bg.png?v=20") !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+.booknook-page .dark-layer {
+  background: rgba(0, 0, 0, 0.35) !important;
+}
+
+.booknook-main-panel {
+  background: rgba(28, 10, 4, 0.62) !important;
+  backdrop-filter: blur(5px) !important;
+}
+
+/* Better Book Nook mobile layout */
+@media (max-width: 900px) {
+  .booknook-page {
+    min-height: 145vh !important;
+    padding: 18px !important;
+    padding-bottom: 90px !important;
+    background-image: url("./booknook_bg.png?v=20") !important;
+    background-size: cover !important;
+    background-position: center top !important;
+  }
+
+  .booknook-main-panel {
+    position: relative !important;
+    z-index: 10 !important;
+    width: 92vw !important;
+    margin: 26px auto 70px !important;
+    padding: 18px !important;
+    background: rgba(28, 10, 4, 0.58) !important;
+    border: 1px solid var(--gold) !important;
+    border-radius: 24px !important;
+  }
+
+  .booknook-main-panel .panel-header {
+    display: block !important;
+  }
+
+  .booknook-main-panel .panel-header h2 {
+    font-size: 48px !important;
+    line-height: 1.05 !important;
+    margin-bottom: 18px !important;
+  }
+
+  .booknook-main-panel .back-home {
+    width: 100% !important;
+    margin: 10px 0 20px !important;
+  }
+
+  .booknook-actions button {
+    width: 100% !important;
+    margin: 0 0 22px !important;
+  }
+
+  .booknook-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  .booknook-card {
+    width: 100% !important;
+    padding: 18px !important;
+    background: rgba(0, 0, 0, 0.34) !important;
+    border: 1px solid rgba(255, 232, 189, 0.28) !important;
+    border-radius: 22px !important;
+  }
+
+  .booknook-card h3 {
+    font-size: 34px !important;
+    margin: 0 0 20px !important;
+  }
+
+  .booknook-card button {
+    width: 100% !important;
+    margin: 10px 0 !important;
+  }
+
+  .booknook-card audio {
+    width: 100% !important;
+    margin-top: 18px !important;
+  }
+
+  #readingTimer {
+    font-size: 50px !important;
+    margin: 26px 0 !important;
+  }
+}
