@@ -1387,3 +1387,65 @@ textarea {
     flex-direction: column;
   }
 }
+/* MOBILE BOOK NOOK FIX */
+@media (max-width: 900px) {
+  .booknook-page {
+    min-height: 100vh;
+    padding: 20px;
+    padding-bottom: 60px;
+  }
+
+  .booknook-page .dark-layer,
+  .booknook-light-layer {
+    pointer-events: none;
+  }
+
+  .booknook-page .nook-home-action,
+  .booknook-page .lamp-action {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
+    z-index: 10;
+    display: inline-block;
+    margin: 12px 8px 12px 0;
+  }
+
+  .booknook-page .lamp-action {
+    display: inline-block !important;
+  }
+
+  .booknook-page .floating-panel {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
+    width: 100%;
+    margin: 16px auto;
+    z-index: 9;
+  }
+
+  .booknook-page .timer-panel {
+    position: relative;
+    top: auto;
+    margin-top: 18px;
+  }
+
+  .booknook-page audio {
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  .booknook-page button {
+    width: 100%;
+    margin: 8px 0;
+  }
+
+  .booknook-page .nook-home-action,
+  .booknook-page .lamp-action {
+    width: auto;
+    padding: 12px 18px;
+  }
+}
