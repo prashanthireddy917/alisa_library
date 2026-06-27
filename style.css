@@ -305,42 +305,43 @@ button {
   overflow-x: hidden;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
 }
 
 .page.active {
   display: block;
 }
 
-/* IMPORTANT: GitHub images are in root folder */
+/* IMPORTANT: your images are uploaded in GitHub root folder */
 .home-page {
-  background-image: url("./home_bg.png");
+  background-image: url("./home_bg.png?v=3");
 }
 
 .library-page,
 .shelves-page,
 .stats-page,
 .challenges-page {
-  background-image: url("./library_bg.png");
+  background-image: url("./library_bg.png?v=3");
 }
 
 .journal-page {
-  background-image: url("./journal_bg.png");
+  background-image: url("./journal_bg.png?v=3");
 }
 
 .booknook-page {
-  background-image: url("./booknook_bg.png");
+  background-image: url("./booknook_bg.png?v=3");
 }
 
 .games-page {
-  background-image: url("./game_bg.png");
+  background-image: url("./game_bg.png?v=3");
 }
 
 .readmap-page {
-  background-image: url("./readmap_bg.png");
+  background-image: url("./readmap_bg.png?v=3");
 }
 
 .settings-page {
-  background-image: url("./home_bg.png");
+  background-image: url("./home_bg.png?v=3");
 }
 
 .dark-layer {
@@ -353,7 +354,6 @@ button {
   pointer-events: none;
 }
 
-/* SHARED CARDS */
 .home-search-card,
 .current-card,
 .page-panel,
@@ -954,17 +954,13 @@ textarea {
   to { background-position: 80px -80px, -120px 120px, 60px -60px; }
 }
 
-.qa-box,
-.choice-box,
-.dropdown-game-box {
+.choice-box {
   width: min(650px, 96%);
   text-align: center;
 }
 
-.qa-options,
 .truth-dare-options,
-.card-grid,
-.book-choice-grid {
+.card-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -972,7 +968,6 @@ textarea {
   margin-top: 18px;
 }
 
-.qa-option,
 .truth-dare-option {
   min-width: 130px;
   min-height: 52px;
@@ -1049,21 +1044,6 @@ textarea {
       0 0 120px rgba(208, 168, 255, 1),
       inset 0 0 35px rgba(255, 255, 255, 0.55);
   }
-}
-
-.dropdown-game-box select {
-  width: min(360px, 95%);
-  margin: 12px 0;
-}
-
-.book-mini-card {
-  width: min(260px, 95%);
-  background: linear-gradient(180deg, #fff0cf, #d9ad62);
-  color: #2a170c;
-  border: 3px double #6d3c18;
-  border-radius: 18px;
-  padding: 14px;
-  text-align: center;
 }
 
 /* CHALLENGES */
