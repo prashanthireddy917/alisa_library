@@ -311,35 +311,36 @@ button {
   display: block;
 }
 
+/* IMPORTANT: GitHub images are in root folder */
 .home-page {
-  background-image: url("assets/images/home_bg.png");
+  background-image: url("./home_bg.png");
 }
 
 .library-page,
 .shelves-page,
 .stats-page,
 .challenges-page {
-  background-image: url("assets/images/library_bg.png");
+  background-image: url("./library_bg.png");
 }
 
 .journal-page {
-  background-image: url("assets/images/journal_bg.png");
+  background-image: url("./journal_bg.png");
 }
 
 .booknook-page {
-  background-image: url("assets/images/booknook_bg.png");
+  background-image: url("./booknook_bg.png");
 }
 
 .games-page {
-  background-image: url("assets/images/game_bg.png");
+  background-image: url("./game_bg.png");
 }
 
 .readmap-page {
-  background-image: url("assets/images/readmap_bg.png");
+  background-image: url("./readmap_bg.png");
 }
 
 .settings-page {
-  background-image: url("assets/images/home_bg.png");
+  background-image: url("./home_bg.png");
 }
 
 .dark-layer {
@@ -586,7 +587,7 @@ button {
   padding: 7px 9px;
 }
 
-/* FIXED BOOKSHELVES */
+/* BOOKSHELVES */
 .shelves-main-panel {
   overflow: hidden;
 }
