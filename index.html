@@ -7,9 +7,11 @@
   <title>Alisa's Library</title>
 
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/png" href="./app-icon.png">
-<link rel="shortcut icon" type="image/png" href="./app-icon.png">
-<link rel="apple-touch-icon" href="./app-icon.png">
+
+  <!-- App Icon: files are in GitHub root folder -->
+  <link rel="icon" type="image/png" href="./app-icon.png?v=3">
+  <link rel="shortcut icon" type="image/png" href="./app-icon.png?v=3">
+  <link rel="apple-touch-icon" href="./app-icon.png?v=3">
 
   <!-- Excel reader -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -18,540 +20,405 @@
 <body class="theme-vintage">
 
   <!-- PASSWORD SCREEN -->
-  <div id="passwordScreen" class="password-screen">
+  <section id="passwordScreen" class="password-screen">
     <div class="password-card">
-      <div class="welcome-icon">🔐</div>
       <p class="tiny-title">Private Library</p>
       <h1>Alisa's Library</h1>
-      <p>Enter password to open your cozy book world.</p>
+      <p>Enter password to open your library.</p>
 
-      <input id="passwordInput" type="password" placeholder="Enter password..." />
+      <input id="passwordInput" type="password" placeholder="Enter password" />
       <button id="passwordBtn">Unlock Library</button>
 
       <p id="passwordMessage" class="password-message"></p>
     </div>
-  </div>
+  </section>
 
-  <!-- WELCOME PAGE -->
-  <div id="welcomeScreen" class="welcome-screen hidden">
+  <!-- WELCOME SCREEN -->
+  <section id="welcomeScreen" class="welcome-screen hidden">
     <div class="welcome-card">
       <div class="welcome-icon">📚</div>
-      <p class="tiny-title">Welcome to</p>
+      <p class="tiny-title">Welcome Back</p>
       <h1>Alisa's Library</h1>
-      <p id="openingQuote" class="opening-quote"></p>
-      <button id="enterLibraryBtn">Enter Alisa's Library</button>
+      <p class="opening-quote">
+        “A cozy little place for every book, every review, and every reading mood.”
+      </p>
+      <button id="enterLibraryBtn">Enter Library</button>
     </div>
-  </div>
+  </section>
 
-  <!-- TOP BAR -->
+  <!-- TOP NAV -->
   <header class="topbar">
     <div class="brand">
-      <div class="profile-bubble">👧🏻</div>
+      <div class="profile-bubble">📖</div>
       <div>
         <strong>Alisa's Library</strong>
-        <small>Cozy Book Tracker</small>
+        <small>Private book tracker</small>
       </div>
     </div>
 
     <nav class="topnav">
-      <button data-section="home" class="nav-btn active">Home</button>
-      <button data-section="library" class="nav-btn">My Library</button>
-      <button data-section="shelves" class="nav-btn">Bookshelves</button>
-      <button data-section="journal" class="nav-btn">Journal</button>
-      <button data-section="booknook" class="nav-btn">Book Nook</button>
-      <button data-section="games" class="nav-btn">Games</button>
-      <button data-section="challenges" class="nav-btn">Challenges</button>
-      <button data-section="readmap" class="nav-btn">Readmap</button>
-      <button data-section="stats" class="nav-btn">Stats</button>
-      <button data-section="settings" class="nav-btn">Settings</button>
+      <button data-section="home" class="active">Home</button>
+      <button data-section="library">My Library</button>
+      <button data-section="shelves">Bookshelves</button>
+      <button data-section="journal">Journal</button>
+      <button data-section="booknook">Book Nook</button>
+      <button data-section="games">TBR Games</button>
+      <button data-section="challenges">Challenges</button>
+      <button data-section="readmap">Readmap</button>
+      <button data-section="stats">Stats</button>
+      <button data-section="settings">Settings</button>
     </nav>
   </header>
 
-  <main>
+  <!-- HOME -->
+  <main id="home" class="page home-page active">
+    <div class="dark-layer"></div>
 
-    <!-- HOME -->
-    <section id="home" class="page active home-page">
-      <div class="dark-layer"></div>
-
-      <div class="home-search-card">
-        <p class="tiny-title">Did I own this book?</p>
-        <h2>Search Your Library</h2>
-
-        <div class="search-row">
-          <input id="homeSearchInput" type="text" placeholder="Search book title or author..." />
-          <button id="homeSearchBtn">Search</button>
-        </div>
-
-        <div id="homeSearchResults" class="search-results">
-          Upload your Excel file first, then search here.
-        </div>
-      </div>
-
-      <div class="current-card">
-        <p class="tiny-title">Currently Reading</p>
-        <h3 id="currentReadingTitle">No current book yet</h3>
-        <p id="currentReadingInfo">Books marked “READING” will show here.</p>
-      </div>
-
-      <button class="map-btn btn-library" data-section="library">My Library</button>
-      <button class="map-btn btn-shelves" data-section="shelves">Bookshelves</button>
-      <button class="map-btn btn-booknook" data-section="booknook">Book Nook</button>
-      <button class="map-btn btn-readmap" data-section="readmap">Readmap</button>
-      <button class="map-btn btn-journal" data-section="journal">Journal</button>
-      <button class="map-btn btn-games" data-section="games">TBR Games</button>
-      <button class="map-btn btn-challenges" data-section="challenges">Challenges</button>
-      <button class="map-btn btn-stats" data-section="stats">Stats</button>
-      <button class="map-btn btn-settings" data-section="settings">Settings</button>
+    <section class="current-card">
+      <p class="tiny-title">Currently Reading</p>
+      <h3>Your cozy reading corner</h3>
+      <p>Upload your Excel files or add books manually.</p>
     </section>
 
-    <!-- MY LIBRARY -->
-    <section id="library" class="page library-page">
-      <div class="dark-layer"></div>
-
-      <div class="page-panel">
-        <div class="panel-header">
-          <div>
-            <p class="tiny-title">Grand Library</p>
-            <h2>My Library</h2>
-            <p>Upload your Excel files and manage all owned books.</p>
-          </div>
-          <button class="back-home" data-section="home">Back Home</button>
-        </div>
-
-        <div class="upload-grid">
-          <label class="upload-box">
-            Upload Owned Books Excel
-            <input id="ownedExcelInput" type="file" accept=".xlsx,.xls,.csv" />
-          </label>
-
-          <label class="upload-box">
-            Upload 2026 Ratings Excel
-            <input id="ratingsExcelInput" type="file" accept=".xlsx,.xls,.csv" />
-          </label>
-
-          <button id="addBookBtn">+ Add Book Manually</button>
-          <button id="fetchCoversBtn">Fetch Covers</button>
-          <button id="exportBackupBtnLibrary">Export Backup</button>
-        </div>
-
-        <div id="importMessage" class="message-box">
-          No Excel uploaded yet.
-        </div>
-
-        <div class="filters">
-          <input id="librarySearchInput" type="text" placeholder="Search library..." />
-
-          <select id="statusFilter">
-            <option value="">All Statuses</option>
-            <option value="Read">Read</option>
-            <option value="Unread">Unread</option>
-            <option value="Currently Reading">Currently Reading</option>
-          </select>
-
-          <select id="formatFilter">
-            <option value="">All Formats</option>
-            <option value="Physical">Physical</option>
-            <option value="Kindle">Kindle</option>
-            <option value="Audio">Audio</option>
-            <option value="Digital">Digital</option>
-            <option value="Libby">Libby</option>
-            <option value="Borrowed">Borrowed</option>
-            <option value="PDF">PDF</option>
-          </select>
-        </div>
-
-        <div id="bookGrid" class="book-grid"></div>
+    <section class="home-search-card">
+      <h2>Search your library</h2>
+      <div class="search-row">
+        <input id="searchInput" type="text" placeholder="Search title or author..." />
       </div>
+      <div id="searchResults" class="search-results">Search your books...</div>
     </section>
 
-    <!-- BOOKSHELVES -->
-    <section id="shelves" class="page shelves-page">
-      <div class="dark-layer"></div>
-
-      <div class="page-panel shelves-main-panel">
-        <div class="panel-header">
-          <div>
-            <p class="tiny-title">Book Spine View</p>
-            <h2>Bookshelves</h2>
-            <p>All book spines are created from your Excel data.</p>
-          </div>
-          <button class="back-home" data-section="home">Back Home</button>
-        </div>
-
-        <div id="shelfArea" class="shelf-area"></div>
-      </div>
-    </section>
-
-    <!-- JOURNAL -->
-    <section id="journal" class="page journal-page">
-      <div class="dark-layer"></div>
-
-      <div class="page-panel">
-        <div class="panel-header">
-          <div>
-            <p class="tiny-title">Book Review Journal</p>
-            <h2>Journal</h2>
-          </div>
-          <button class="back-home" data-section="home">Back Home</button>
-        </div>
-
-        <div class="journal-grid">
-          <div>
-            <label>Book Title</label>
-            <input id="journalTitle" type="text" placeholder="Book title..." />
-
-            <label>Author</label>
-            <input id="journalAuthor" type="text" placeholder="Author..." />
-
-            <label>Rating</label>
-            <div id="starButtons" class="star-buttons">
-              <button data-star="1">☆</button>
-              <button data-star="2">☆</button>
-              <button data-star="3">☆</button>
-              <button data-star="4">☆</button>
-              <button data-star="5">☆</button>
-            </div>
-
-            <label>Format</label>
-            <select id="journalFormat">
-              <option>Physical</option>
-              <option>Kindle</option>
-              <option>Audio</option>
-              <option>Digital</option>
-              <option>Libby</option>
-              <option>Borrowed</option>
-              <option>PDF</option>
-            </select>
-
-            <label>Cute Stickers</label>
-            <div id="stickerPicker" class="sticker-picker">
-              <button data-sticker="🐱">🐱</button>
-              <button data-sticker="🐈">🐈</button>
-              <button data-sticker="🐶">🐶</button>
-              <button data-sticker="🐾">🐾</button>
-              <button data-sticker="📚">📚</button>
-              <button data-sticker="📖">📖</button>
-              <button data-sticker="🔖">🔖</button>
-              <button data-sticker="🕯️">🕯️</button>
-              <button data-sticker="☕">☕</button>
-              <button data-sticker="🍵">🍵</button>
-              <button data-sticker="🌸">🌸</button>
-              <button data-sticker="🌷">🌷</button>
-              <button data-sticker="🌻">🌻</button>
-              <button data-sticker="🍄">🍄</button>
-              <button data-sticker="🌙">🌙</button>
-              <button data-sticker="⭐">⭐</button>
-              <button data-sticker="✨">✨</button>
-              <button data-sticker="🧸">🧸</button>
-              <button data-sticker="🎀">🎀</button>
-              <button data-sticker="💌">💌</button>
-              <button data-sticker="🧁">🧁</button>
-              <button data-sticker="🍓">🍓</button>
-              <button data-sticker="🦋">🦋</button>
-              <button data-sticker="👻">👻</button>
-              <button data-sticker="🧙‍♀️">🧙‍♀️</button>
-              <button data-sticker="🏰">🏰</button>
-              <button data-sticker="🗝️">🗝️</button>
-              <button data-sticker="💗">💗</button>
-              <button data-sticker="🌧️">🌧️</button>
-              <button data-sticker="🍂">🍂</button>
-            </div>
-
-            <div class="selected-sticker-box">
-              <p>Selected stickers:</p>
-              <div id="selectedStickers" class="selected-stickers">No stickers yet.</div>
-              <button id="clearStickersBtn" type="button">Clear Stickers</button>
-            </div>
-          </div>
-
-          <div>
-            <label>Review Notes</label>
-            <textarea id="journalReview" placeholder="Write your review..."></textarea>
-
-            <label>Favorite Quote</label>
-            <textarea id="journalQuote" placeholder="Favorite quote..."></textarea>
-
-            <button id="saveJournalBtn">Save Journal Review</button>
-
-            <div class="journal-preview">
-              <p class="tiny-title">Journal Page Preview</p>
-              <h3 id="journalPreviewTitle">Your review page</h3>
-              <div id="journalPreviewStickers" class="journal-preview-stickers">✨ 📚 ☕</div>
-              <p id="journalPreviewText">Your selected stickers and review will appear here.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- BOOK NOOK -->
-    <section id="booknook" class="page booknook-page">
-      <div id="booknookDarkLayer" class="booknook-light-layer"></div>
-
-      <button class="image-action lamp-action" id="lampBtn">Lamp On / Off</button>
-      <button class="image-action music-action" id="musicMenuBtn">Music</button>
-      <button class="image-action timer-action" id="timerOpenBtn">Reading Timer</button>
-      <button class="image-action nook-home-action" data-section="home">Back Home</button>
-
-      <div id="musicPanel" class="floating-panel hidden">
-        <h3>Music</h3>
-        <button data-music="calm.mp3" class="music-choice">Calm</button>
-        <button data-music="birds.mp3" class="music-choice">Birds</button>
-        <button data-music="river.mp3" class="music-choice">Rain / River</button>
-        <button id="stopMusicBtn">Stop Music</button>
-      </div>
-
-      <div id="timerPanel" class="floating-panel timer-panel hidden">
-        <h3>Reading Timer</h3>
-        <p id="readingTimer">00:00:00</p>
-        <button id="startReadingBtn">Start Reading</button>
-        <button id="pauseReadingBtn">Pause</button>
-        <button id="resetReadingBtn">Reset</button>
-      </div>
-    </section>
-
-    <!-- TBR GAMES -->
-    <section id="games" class="page games-page">
-      <div class="dark-layer"></div>
-
-      <div class="page-panel">
-        <div class="panel-header">
-          <div>
-            <p class="tiny-title">TBR Games Tent</p>
-            <h2>Choose Your Next Read</h2>
-          </div>
-          <button class="back-home" data-section="home">Back Home</button>
-        </div>
-
-        <div class="games-grid">
-          <button class="game-btn" data-game="Spin the Wheel">🎡 Spin the Wheel</button>
-          <button class="game-btn" data-game="Q and A Picker">❓ Q and A Picker</button>
-          <button class="game-btn" data-game="Dice Roll">🎲 Dice Roll</button>
-          <button class="game-btn" data-game="Magic Spell">✨ Magic Spell</button>
-          <button class="game-btn" data-game="TBR Jar Shake">🫙 TBR Jar Shake</button>
-          <button class="game-btn" data-game="Pick a Card">🃏 Pick a Card</button>
-          <button class="game-btn" data-game="Truth or Dare">💌 Truth or Dare</button>
-          <button class="game-btn" data-game="Mood Picker">🔮 Mood Picker</button>
-          <button class="game-btn" data-game="Short Pages">📏 Short Pages</button>
-          <button class="game-btn" data-game="Genre Picker">🏷️ Genre Picker</button>
-        </div>
-
-        <div id="gamePlayStage" class="game-play-stage">
-          <p>Choose a game above to reveal your next read.</p>
-        </div>
-
-        <div id="gameResult" class="game-result">
-          Upload books first, then play a game.
-        </div>
-      </div>
-    </section>
-
-    <!-- BOOK CHALLENGES -->
-    <section id="challenges" class="page challenges-page">
-      <div class="dark-layer"></div>
-
-      <div class="page-panel">
-        <div class="panel-header">
-          <div>
-            <p class="tiny-title">Book Challenge Room</p>
-            <h2>Reading Challenges</h2>
-            <p>Pick a random book challenge, complete it, and unlock cute rewards.</p>
-          </div>
-          <button class="back-home" data-section="home">Back Home</button>
-        </div>
-
-        <div class="challenge-top">
-          <button id="newChallengeBtn">🎲 Pick Random Challenge</button>
-          <button id="completeChallengeBtn">🏆 Mark Current Challenge Complete</button>
-        </div>
-
-        <div id="currentChallengeBox" class="current-challenge-box">
-          No active challenge yet. Pick one to begin.
-        </div>
-
-        <h3>Unlocked Rewards</h3>
-        <div id="rewardShelf" class="reward-shelf">
-          No rewards yet.
-        </div>
-
-        <h3>Challenge History</h3>
-        <div id="challengeHistory" class="challenge-history">
-          No completed challenges yet.
-        </div>
-      </div>
-    </section>
-
-    <!-- READMAP -->
-    <section id="readmap" class="page readmap-page">
-      <div class="dark-layer"></div>
-
-      <div class="page-panel">
-        <div class="panel-header">
-          <div>
-            <p class="tiny-title">Reading Roadmap</p>
-            <h2>Yearly Goal</h2>
-          </div>
-          <button class="back-home" data-section="home">Back Home</button>
-        </div>
-
-        <div class="goal-box">
-          <label>Set yearly goal</label>
-          <input id="yearGoalInput" type="number" value="75" min="1" />
-          <button id="saveGoalBtn">Save Goal</button>
-        </div>
-
-        <div id="goalProgressText" class="goal-progress-text"></div>
-        <div id="goalLevels" class="goal-levels"></div>
-      </div>
-    </section>
-
-    <!-- STATS -->
-    <section id="stats" class="page stats-page">
-      <div class="dark-layer"></div>
-
-      <div class="page-panel">
-        <div class="panel-header">
-          <div>
-            <p class="tiny-title">Stats Tower</p>
-            <h2>Reading Stats</h2>
-          </div>
-          <button class="back-home" data-section="home">Back Home</button>
-        </div>
-
-        <div class="stats-cards">
-          <div class="stat-card">
-            <p>Total Owned</p>
-            <h3 id="totalBooksStat">0</h3>
-          </div>
-
-          <div class="stat-card">
-            <p>Read</p>
-            <h3 id="readBooksStat">0</h3>
-          </div>
-
-          <div class="stat-card">
-            <p>Unread</p>
-            <h3 id="unreadBooksStat">0</h3>
-          </div>
-
-          <div class="stat-card">
-            <p>Currently Reading</p>
-            <h3 id="readingBooksStat">0</h3>
-          </div>
-        </div>
-
-        <h3>Read / Unread / Reading</h3>
-        <div id="statusBars" class="bars"></div>
-
-        <h3>Ratings</h3>
-        <div id="ratingBars" class="bars"></div>
-
-        <h3>Formats</h3>
-        <div id="formatBars" class="bars"></div>
-
-        <h3>Books Read by Month</h3>
-        <div id="monthBars" class="bars"></div>
-      </div>
-    </section>
-
-    <!-- SETTINGS -->
-    <section id="settings" class="page settings-page">
-      <div class="dark-layer"></div>
-
-      <div class="page-panel">
-        <div class="panel-header">
-          <div>
-            <p class="tiny-title">Settings House</p>
-            <h2>Settings</h2>
-          </div>
-          <button class="back-home" data-section="home">Back Home</button>
-        </div>
-
-        <h3>Themes</h3>
-        <div class="theme-grid">
-          <button data-theme="theme-vintage">Vintage Cozy</button>
-          <button data-theme="theme-dark">Dark Academia</button>
-          <button data-theme="theme-pink">Pink Love</button>
-          <button data-theme="theme-green">Forest</button>
-          <button data-theme="theme-blue">Ocean</button>
-          <button data-theme="theme-purple">Galaxy</button>
-          <button data-theme="theme-cream">Cream</button>
-          <button data-theme="theme-red">Mystery Red</button>
-          <button data-theme="theme-coffee">Coffee</button>
-          <button data-theme="theme-gold">Golden</button>
-        </div>
-
-        <h3>Data</h3>
-        <div class="settings-data-grid">
-          <button id="exportBackupBtn">Export All Saved Data</button>
-
-          <label class="upload-box">
-            Import Backup JSON
-            <input id="importBackupInput" type="file" accept=".json" />
-          </label>
-
-          <button id="clearDataBtn" class="danger">Clear Saved Data</button>
-        </div>
-
-        <div id="settingsMessage" class="message-box">
-          Export saves your books, journal stickers, ratings, reviews, covers, challenges, rewards, and goal.
-        </div>
-      </div>
-    </section>
-
+    <button class="map-btn btn-library" data-section="library">My Library</button>
+    <button class="map-btn btn-shelves" data-section="shelves">Bookshelves</button>
+    <button class="map-btn btn-journal" data-section="journal">Journal</button>
+    <button class="map-btn btn-booknook" data-section="booknook">Book Nook</button>
+    <button class="map-btn btn-games" data-section="games">TBR Games</button>
+    <button class="map-btn btn-challenges" data-section="challenges">Challenges</button>
+    <button class="map-btn btn-readmap" data-section="readmap">Readmap</button>
+    <button class="map-btn btn-stats" data-section="stats">Stats</button>
+    <button class="map-btn btn-settings" data-section="settings">Settings</button>
   </main>
 
-  <!-- BOOK DETAILS MODAL -->
+  <!-- LIBRARY -->
+  <section id="library" class="page library-page">
+    <div class="dark-layer"></div>
+
+    <div class="page-panel">
+      <div class="panel-header">
+        <div>
+          <p class="tiny-title">Book Collection</p>
+          <h2>My Library</h2>
+        </div>
+        <button class="back-home">Back Home</button>
+      </div>
+
+      <div class="upload-grid">
+        <label class="upload-box">
+          Upload Owned Books Excel
+          <input id="ownedUpload" type="file" accept=".xlsx,.xls,.csv" />
+        </label>
+
+        <label class="upload-box">
+          Upload Ratings Excel
+          <input id="ratingsUpload" type="file" accept=".xlsx,.xls,.csv" />
+        </label>
+
+        <button id="addBookBtn">Add Book Manually</button>
+      </div>
+
+      <p id="libraryMessage" class="message-box">Upload your Excel sheets or add books manually.</p>
+
+      <div class="filters">
+        <input id="filterSearch" type="text" placeholder="Filter by title, author, genre..." />
+        <select id="filterStatus">
+          <option value="all">All status</option>
+          <option value="Read">Read</option>
+          <option value="Unread">Unread</option>
+        </select>
+        <select id="filterGenre">
+          <option value="all">All genres</option>
+        </select>
+      </div>
+
+      <div id="bookGrid" class="book-grid"></div>
+    </div>
+  </section>
+
+  <!-- SHELVES -->
+  <section id="shelves" class="page shelves-page">
+    <div class="dark-layer"></div>
+
+    <div class="page-panel shelves-main-panel">
+      <div class="panel-header">
+        <div>
+          <p class="tiny-title">Visual Shelves</p>
+          <h2>Bookshelves</h2>
+        </div>
+        <button class="back-home">Back Home</button>
+      </div>
+
+      <div id="shelfArea" class="shelf-area"></div>
+    </div>
+  </section>
+
+  <!-- JOURNAL -->
+  <section id="journal" class="page journal-page">
+    <div class="dark-layer"></div>
+
+    <div class="page-panel">
+      <div class="panel-header">
+        <div>
+          <p class="tiny-title">Reading Notes</p>
+          <h2>Journal</h2>
+        </div>
+        <button class="back-home">Back Home</button>
+      </div>
+
+      <div class="journal-grid">
+        <div>
+          <label>Choose Book</label>
+          <select id="journalBookSelect">
+            <option value="">Choose a book</option>
+          </select>
+
+          <label>Book Title</label>
+          <input id="journalTitle" type="text" placeholder="Book title" />
+
+          <label>Author</label>
+          <input id="journalAuthor" type="text" placeholder="Author" />
+
+          <label>Rating</label>
+          <div class="star-buttons">
+            <button type="button" data-rating="1">★</button>
+            <button type="button" data-rating="2">★</button>
+            <button type="button" data-rating="3">★</button>
+            <button type="button" data-rating="4">★</button>
+            <button type="button" data-rating="5">★</button>
+          </div>
+
+          <label>Review</label>
+          <textarea id="journalReview" placeholder="Write your review..."></textarea>
+
+          <button id="saveJournalBtn">Save Journal</button>
+        </div>
+
+        <div>
+          <h3>Stickers</h3>
+          <div id="stickerPicker" class="sticker-picker"></div>
+
+          <div class="selected-sticker-box">
+            <strong>Selected Stickers</strong>
+            <div id="selectedStickersBox" class="selected-stickers"></div>
+          </div>
+
+          <div id="journalPreview" class="journal-preview"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOK NOOK -->
+  <section id="booknook" class="page booknook-page">
+    <div class="dark-layer"></div>
+    <div id="booknookLightLayer" class="booknook-light-layer"></div>
+
+    <button class="image-action nook-home-action back-home">Back Home</button>
+    <button id="toggleLightBtn" class="image-action lamp-action">Toggle Light</button>
+
+    <div class="floating-panel">
+      <h3>Music</h3>
+      <button class="music-choice" data-music="calm.mp3">Calm Music</button>
+      <button class="music-choice" data-music="birds.mp3">Birds</button>
+      <button class="music-choice" data-music="river.mp3">River</button>
+      <audio id="musicPlayer" controls></audio>
+    </div>
+
+    <div class="floating-panel timer-panel">
+      <h3>Reading Timer</h3>
+      <div id="readingTimer">00:00</div>
+      <button id="startTimerBtn">Start</button>
+      <button id="pauseTimerBtn">Pause</button>
+      <button id="resetTimerBtn">Reset</button>
+    </div>
+  </section>
+
+  <!-- GAMES -->
+  <section id="games" class="page games-page">
+    <div class="dark-layer"></div>
+
+    <div class="page-panel">
+      <div class="panel-header">
+        <div>
+          <p class="tiny-title">TBR Games</p>
+          <h2>Pick Your Next Read</h2>
+        </div>
+        <button class="back-home">Back Home</button>
+      </div>
+
+      <div class="games-grid">
+        <button class="game-btn" data-game="wheel">Spin the TBR Wheel</button>
+        <button class="game-btn" data-game="jar">TBR Jar</button>
+        <button class="game-btn" data-game="dice">Reading Dice</button>
+        <button class="game-btn" data-game="card">Pick a Card</button>
+        <button class="game-btn" data-game="crystal">Crystal Ball</button>
+        <button class="game-btn" data-game="truth-dare">Truth or Dare</button>
+      </div>
+
+      <div id="gamePlayStage" class="game-play-stage">
+        Choose a game to start.
+      </div>
+
+      <div id="gameResult" class="game-result"></div>
+    </div>
+  </section>
+
+  <!-- CHALLENGES -->
+  <section id="challenges" class="page challenges-page">
+    <div class="dark-layer"></div>
+
+    <div class="page-panel">
+      <div class="panel-header">
+        <div>
+          <p class="tiny-title">Reading Challenges</p>
+          <h2>Book Challenges</h2>
+        </div>
+        <button class="back-home">Back Home</button>
+      </div>
+
+      <div class="challenge-top">
+        <button id="newChallengeBtn">New Challenge</button>
+        <button id="completeChallengeBtn">Complete Challenge</button>
+      </div>
+
+      <div id="currentChallengeBox" class="current-challenge-box"></div>
+      <div id="rewardShelf" class="reward-shelf"></div>
+      <div id="challengeHistory" class="challenge-history"></div>
+    </div>
+  </section>
+
+  <!-- READMAP -->
+  <section id="readmap" class="page readmap-page">
+    <div class="dark-layer"></div>
+
+    <div class="page-panel">
+      <div class="panel-header">
+        <div>
+          <p class="tiny-title">Reading Goals</p>
+          <h2>Readmap</h2>
+        </div>
+        <button class="back-home">Back Home</button>
+      </div>
+
+      <div class="goal-box">
+        <label>Yearly Goal</label>
+        <input id="yearlyGoalInput" type="number" min="1" />
+        <button id="saveGoalBtn">Save Goal</button>
+      </div>
+
+      <div id="goalLevels" class="goal-levels"></div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section id="stats" class="page stats-page">
+    <div class="dark-layer"></div>
+
+    <div class="page-panel">
+      <div class="panel-header">
+        <div>
+          <p class="tiny-title">Library Stats</p>
+          <h2>Stats</h2>
+        </div>
+        <button class="back-home">Back Home</button>
+      </div>
+
+      <div class="stats-cards">
+        <div class="stat-card">
+          <h3 id="totalBooksStat">0</h3>
+          <p>Total Books</p>
+        </div>
+
+        <div class="stat-card">
+          <h3 id="readBooksStat">0</h3>
+          <p>Read</p>
+        </div>
+
+        <div class="stat-card">
+          <h3 id="unreadBooksStat">0</h3>
+          <p>Unread</p>
+        </div>
+
+        <div class="stat-card">
+          <h3 id="avgRatingStat">0</h3>
+          <p>Average Rating</p>
+        </div>
+      </div>
+
+      <h3>Genres</h3>
+      <div id="genreBars" class="bars"></div>
+
+      <h3>Ratings</h3>
+      <div id="ratingBars" class="bars"></div>
+    </div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="settings" class="page settings-page">
+    <div class="dark-layer"></div>
+
+    <div class="page-panel">
+      <div class="panel-header">
+        <div>
+          <p class="tiny-title">Customize</p>
+          <h2>Settings</h2>
+        </div>
+        <button class="back-home">Back Home</button>
+      </div>
+
+      <h3>Themes</h3>
+      <div class="theme-grid">
+        <button data-theme="theme-vintage">Vintage</button>
+        <button data-theme="theme-dark">Dark</button>
+        <button data-theme="theme-pink">Pink</button>
+        <button data-theme="theme-green">Green</button>
+        <button data-theme="theme-blue">Blue</button>
+        <button data-theme="theme-purple">Purple</button>
+        <button data-theme="theme-cream">Cream</button>
+        <button data-theme="theme-red">Red</button>
+        <button data-theme="theme-coffee">Coffee</button>
+        <button data-theme="theme-gold">Gold</button>
+      </div>
+
+      <h3>Backup</h3>
+      <div class="settings-data-grid">
+        <button id="exportBtn">Export Backup</button>
+
+        <label class="upload-box">
+          Import Backup
+          <input id="importBackup" type="file" accept=".json" />
+        </label>
+
+        <button id="clearDataBtn" class="danger">Clear App Data</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOK MODAL -->
   <div id="bookModal" class="modal hidden">
     <div class="modal-card">
-      <button id="closeBookModal" class="close-btn">×</button>
-      <div id="bookModalContent"></div>
+      <button id="closeModalBtn" class="close-btn">&times;</button>
+      <div id="modalBody"></div>
     </div>
   </div>
 
-  <!-- ADD BOOK MODAL -->
-  <div id="addBookModal" class="modal hidden">
+  <!-- EDIT MODAL KEPT FOR SAFETY -->
+  <div id="editModal" class="modal hidden">
     <div class="modal-card">
-      <button id="closeAddModal" class="close-btn">×</button>
-
-      <h2>Add Book</h2>
-
-      <label>Title</label>
-      <input id="manualTitle" type="text" />
-
-      <label>Author</label>
-      <input id="manualAuthor" type="text" />
-
-      <label>Genre</label>
-      <input id="manualGenre" type="text" />
-
-      <label>Status</label>
-      <select id="manualStatus">
-        <option>Unread</option>
-        <option>Read</option>
-        <option>Currently Reading</option>
-      </select>
-
-      <label>Format</label>
-      <select id="manualFormat">
-        <option>Physical</option>
-        <option>Kindle</option>
-        <option>Audio</option>
-        <option>Digital</option>
-        <option>Libby</option>
-        <option>Borrowed</option>
-        <option>PDF</option>
-      </select>
-
-      <label>Pages</label>
-      <input id="manualPages" type="number" />
-
-      <button id="saveManualBookBtn">Save Book</button>
+      <button id="closeEditBtn" class="close-btn">&times;</button>
+      <form id="editForm"></form>
     </div>
   </div>
 
-  <audio id="musicPlayer" loop></audio>
-
-  <script src="script.js"></script>
+  <script src="script.js?v=3"></script>
 </body>
 </html>
