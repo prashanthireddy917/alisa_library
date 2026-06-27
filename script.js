@@ -268,7 +268,14 @@ function unlockApp() {
 }
 
 function enterLibrary() {
-  if (welcomeScreen) welcomeScreen.classList.add("hidden");
+  if (welcomeScreen) {
+    welcomeScreen.classList.add("hidden");
+  }
+
+  if (passwordScreen) {
+    passwordScreen.classList.add("hidden");
+  }
+
   showSection("home");
 }
 
