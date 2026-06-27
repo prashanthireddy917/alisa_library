@@ -6,7 +6,7 @@
 
   <title>Alisa's Library</title>
 
-  <link rel="stylesheet" href="style.css" />
+ <link rel="stylesheet" href="style.css?v=10" />
 
   <!-- App Icon: files are in GitHub root folder -->
   <link rel="icon" type="image/png" href="./app-icon.png?v=3">
@@ -218,29 +218,47 @@
   </section>
 
   <!-- BOOK NOOK -->
-  <section id="booknook" class="page booknook-page">
-    <div class="dark-layer"></div>
-    <div id="booknookLightLayer" class="booknook-light-layer"></div>
+  <!-- BOOK NOOK -->
+<section id="booknook" class="page booknook-page">
+  <div class="dark-layer"></div>
+  <div id="booknookLightLayer" class="booknook-light-layer"></div>
 
-    <button class="image-action nook-home-action back-home">Back Home</button>
-    <button id="toggleLightBtn" class="image-action lamp-action">Toggle Light</button>
-
-    <div class="floating-panel">
-      <h3>Music</h3>
-      <button class="music-choice" data-music="calm.mp3">Calm Music</button>
-      <button class="music-choice" data-music="birds.mp3">Birds</button>
-      <button class="music-choice" data-music="river.mp3">River</button>
-      <audio id="musicPlayer" controls></audio>
+  <div class="booknook-main-panel">
+    <div class="panel-header">
+      <div>
+        <p class="tiny-title">Cozy Reading Room</p>
+        <h2>Book Nook</h2>
+      </div>
+      <button class="back-home">Back Home</button>
     </div>
 
-    <div class="floating-panel timer-panel">
-      <h3>Reading Timer</h3>
-      <div id="readingTimer">00:00</div>
-      <button id="startTimerBtn">Start</button>
-      <button id="pauseTimerBtn">Pause</button>
-      <button id="resetTimerBtn">Reset</button>
+    <div class="booknook-actions">
+      <button id="toggleLightBtn">Toggle Light</button>
     </div>
-  </section>
+
+    <div class="booknook-grid">
+      <div class="booknook-card">
+        <h3>Music</h3>
+
+        <button class="music-choice" data-music="calm.mp3">Calm Music</button>
+        <button class="music-choice" data-music="birds.mp3">Birds</button>
+        <button class="music-choice" data-music="river.mp3">River</button>
+
+        <audio id="musicPlayer" controls></audio>
+      </div>
+
+      <div class="booknook-card">
+        <h3>Reading Timer</h3>
+
+        <div id="readingTimer">00:00</div>
+
+        <button id="startTimerBtn">Start</button>
+        <button id="pauseTimerBtn">Pause</button>
+        <button id="resetTimerBtn">Reset</button>
+      </div>
+    </div>
+  </div>
+</section>
 
   <!-- GAMES -->
   <section id="games" class="page games-page">
