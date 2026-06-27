@@ -240,17 +240,29 @@ function loadData() {
 }
 
 function unlockApp() {
-  if (!passwordInput || !passwordScreen || !welcomeScreen) return;
+  if (!passwordInput || !passwordScreen) return;
 
   const typedPassword = passwordInput.value.trim();
 
   if (typedPassword === APP_PASSWORD) {
     passwordScreen.classList.add("hidden");
-    welcomeScreen.classList.remove("hidden");
-    passwordMessage.textContent = "";
+
+    if (welcomeScreen) {
+      welcomeScreen.classList.add("hidden");
+    }
+
+    showSection("home");
+
+    if (passwordMessage) {
+      passwordMessage.textContent = "";
+    }
+
     passwordInput.value = "";
   } else {
-    passwordMessage.textContent = "Wrong password. Try again.";
+    if (passwordMessage) {
+      passwordMessage.textContent = "Wrong password. Try again.";
+    }
+
     passwordInput.value = "";
   }
 }
