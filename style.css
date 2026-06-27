@@ -1777,3 +1777,56 @@ textarea {
     margin: 26px 0 !important;
   }
 }
+/* 10 TBR GAME FIX */
+.book-choice-box,
+.dice-game-box,
+.card-game-box {
+  width: min(720px, 96%);
+  text-align: center;
+}
+
+.book-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+  width: 100%;
+}
+
+.book-choice-card {
+  min-height: 130px;
+  padding: 16px;
+  display: grid;
+  gap: 8px;
+  place-items: center;
+  text-align: center;
+  background: linear-gradient(180deg, #fff0cf, #d9ad62);
+  color: #2a170c;
+  border: 3px double #6d3c18;
+  border-radius: 18px;
+}
+
+.book-choice-card strong {
+  font-size: 18px;
+}
+
+.book-choice-card small,
+.book-choice-card span {
+  display: block;
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .games-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .game-btn {
+    min-height: 90px !important;
+    font-size: 15px !important;
+  }
+
+  .book-choice-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
